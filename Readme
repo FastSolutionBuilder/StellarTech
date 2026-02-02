@@ -2,7 +2,6 @@
 
 StellarTech is a financial platform built on the Stellar blockchain that enables **mass disbursements** and **AI-assisted investment management**. The system is designed to onboard users with no prior crypto experience and provide access to payments and tokenized real-world assets (RWAs).
 
----
 
 ## Table of Contents
 
@@ -20,8 +19,6 @@ StellarTech is a financial platform built on the Stellar blockchain that enables
 - [Contributing](#contributing)
 - [License](#license)
 
----
-
 ## Overview
 
 StellarTech combines bulk payment infrastructure with portfolio management tooling on Stellar Soroban. Organizations can distribute funds at scale, while recipients gain access to wallets and investment products without requiring traditional banking relationships.
@@ -32,7 +29,6 @@ Key goals:
 - Fractional access to tokenized assets
 - Automated portfolio management
 
----
 
 ## Problem Statement
 
@@ -40,8 +36,6 @@ Key goals:
 - Existing investment platforms require banking access and minimum balances
 - Cross-border disbursements are slow and expensive
 - Access to global markets and portfolio management tools is limited
-
----
 
 ## Solution
 
@@ -52,7 +46,6 @@ StellarTech provides:
 4. AI-driven portfolio optimization
 5. Integrated compliance and security controls
 
----
 
 ## Features
 
@@ -82,7 +75,6 @@ StellarTech provides:
 - Encrypted data storage
 - Audited Soroban smart contracts
 
----
 
 ## Architecture
 
@@ -95,4 +87,180 @@ StellarTech provides:
 - **Infrastructure**: Docker
 
 ### High-Level Architecture
+Frontend (Next.js)
+|
+Backend (NestJS)
+|
+Stellar Soroban (Rust Smart Contracts)
 
+
+### Repository Structure
+
+#### Smart Contracts
+
+
+contracts/
+├── disbursement/
+├── assets/
+├── trading/
+└── portfolio/
+
+
+#### Backend
+
+
+apps/api/
+├── modules/
+│ ├── disbursement/
+│ ├── assets/
+│ ├── ai/
+│ ├── stellar/
+│ └── users/
+
+
+#### Frontend
+
+
+apps/web/
+├── app/
+│ ├── admin/
+│ └── user/
+
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v18+
+- Rust v1.75+
+- Stellar CLI
+- PostgreSQL v14+
+- Docker (optional)
+
+### Installation
+
+```bash
+git clone https://github.com/yourusername/stellartech.git
+cd stellartech
+npm install
+
+Environment Setup
+cp .env.example .env
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
+
+Configure Stellar (Testnet)
+export STELLAR_NETWORK=testnet
+export STELLAR_RPC_URL=https://soroban-testnet.stellar.org
+
+stellar keys generate admin --network testnet
+stellar keys generate deployer --network testnet
+
+Build & Deploy Contracts
+cd contracts
+cargo build --target wasm32-unknown-unknown --release
+
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/disbursement.wasm \
+  --source deployer \
+  --network testnet
+
+Database Setup
+npm run db:migrate
+npm run db:seed
+
+Run Development Servers
+npm run dev
+
+
+Frontend: http://localhost:3000
+
+API: http://localhost:3001
+
+Environment Variables
+Backend (apps/api/.env)
+DATABASE_URL=postgresql://user:password@localhost:5432/stellartech
+
+STELLAR_NETWORK=testnet
+STELLAR_RPC_URL=https://soroban-testnet.stellar.org
+STELLAR_HORIZON_URL=https://horizon-testnet.stellar.org
+
+DISBURSEMENT_CONTRACT_ID=
+ASSET_CONTRACT_ID=
+TRADING_CONTRACT_ID=
+
+OPENAI_API_KEY=
+JWT_SECRET=
+ENCRYPTION_KEY=
+
+Frontend (apps/web/.env)
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_STELLAR_NETWORK=testnet
+
+Testing
+npm test
+
+
+Component-level testing:
+
+cargo test
+npm run test:api
+npm run test:web
+npm run test:e2e
+
+Deployment
+Smart Contracts (Mainnet)
+export STELLAR_NETWORK=mainnet
+
+stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/disbursement.wasm \
+  --source deployer \
+  --network mainnet
+
+Backend
+docker build -t stellartech-api -f apps/api/Dockerfile .
+docker-compose -f docker-compose.prod.yml up -d
+
+Frontend
+npm run build:web
+vercel --prod
+
+Documentation
+
+docs/ARCHITECTURE.md
+
+docs/CONTRACTS.md
+
+docs/API.md
+
+docs/DEPLOYMENT.md
+
+Roadmap
+
+Phase 1: Core disbursement and wallets
+
+Phase 2: Asset tokenization and trading
+
+Phase 3: AI portfolio optimization
+
+Phase 4: Mainnet launch and audits
+
+Contributing
+
+Contributions are welcome.
+
+Fork the repository
+
+Create a feature branch
+
+Commit changes using Conventional Commits
+
+Open a pull request
+
+See CONTRIBUTING.md for details.
+
+License
+
+MIT License. See the LICENSE file for details.
